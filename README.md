@@ -50,4 +50,4 @@ Enjoy your experience
 
 ## License
 
-Express All rights reserved by Continuous Software Ltd, author: [Fabrizio Torelli](mailto:fabrizio.torelli@optiim.com)
+Express All rights reserved by Continuous Software Ltd, author: [Fabrizio Torelli](mailto:hellgate75@gmail.com), follow articles on [LinkedIn](https://www.linkedin.com/in/fabriziotorelli)

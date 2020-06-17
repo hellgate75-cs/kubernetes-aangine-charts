@@ -1,0 +1,18 @@
+{{- if .Values.services.redis.create -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "aangine-platform-redis.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-redis.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ .Values.services.redis.hostname }}:{{ .Values.services.redis.service.httpPort }}']
+  restartPolicy: Always
+{{- end }}

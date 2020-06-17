@@ -1,0 +1,23 @@
+{{- if .Values.services.business_unit.create -}}
+{{- if .Values.services.business_unit.service.enabled -}}
+{{- $svcHttpPort := .Values.services.business_unit.service.httpPort -}}
+{{- $httpPort := .Values.services.business_unit.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.business_unit.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-business-unit.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+#  type: {{ .Values.services.business_unit.service.type }}
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-business-unit.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

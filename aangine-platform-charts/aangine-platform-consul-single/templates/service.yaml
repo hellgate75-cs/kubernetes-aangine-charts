@@ -1,0 +1,42 @@
+{{- if .Values.services.consul.single.create -}}
+{{- if .Values.services.consul.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-consul-single.fullname" . }}-external-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-single.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.services.consulPublicNodePort }}
+      targetPort: {{ .Values.services.consulPublicNodePort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-platform-consul-single.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.consul.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-single.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .Values.services.consulPrivateDnsPort }}
+      targetPort: {{ .Values.services.consulPrivateDnsPort }}
+      protocol: UDP
+      name: dns-port
+    - port: {{ .Values.services.consulPublicNodePort }}
+      targetPort: {{ .Values.services.consulPublicNodePort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-platform-consul-single.selectorLabels" . | nindent 4 }}
+
+{{- end }}
+{{- end }}

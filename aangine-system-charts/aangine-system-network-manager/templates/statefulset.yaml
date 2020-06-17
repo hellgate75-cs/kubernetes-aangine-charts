@@ -1,0 +1,65 @@
+{{- if .Values.services.network_manager.create }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.services.network_manager.statefulSet.name }}
+  labels:
+    {{- include "aangine-system-network-manager.labels" . | nindent 4 }}
+  {{- with .Values.services.network_manager.statefulSet.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "aangine-system-network-manager.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "aangine-system-network-manager.labels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      {{- with .Values.services.network_manager.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.network_manager.affinity }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.network_manager.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: {{ .Values.services.network_manager.appName }}-instance
+        image: {{ printf "%s/%s:%s" .Values.services.network_manager.image.repository .Values.services.network_manager.image.branch .Values.services.network_manager.image.tag | quote}}
+        imagePullPolicy: {{ .Values.services.network_manager.image.pullPolicy }}
+        env:
+          {{- toYaml .Values.services.network_manager.environment | nindent 10 }}
+        securityContext:
+          {{- toYaml .Values.services.network_manager.securityContext | nindent 10 }}
+        command: ["bash"]
+        stdin: true
+        tty: true
+      dnsConfig:
+        nameservers:
+          {{- toYaml .Values.services.network_manager.dns.nameservers | nindent 10 }}
+        searches:
+          {{- toYaml .Values.services.network_manager.dns.searches | nindent 10 }}
+
+{{- end }}

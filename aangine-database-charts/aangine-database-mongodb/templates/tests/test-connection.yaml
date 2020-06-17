@@ -1,0 +1,20 @@
+{{- if .Values.services.mongodb.create -}}
+{{- if .Values.services.mongodb.testEnabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "aangine-databasemongodb.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-databasemongodb.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ .Values.services.mongodb.hostname }}:{{ .Values.services.mongodb.service.httpPort }}']
+  restartPolicy: Always
+{{- end }}
+{{- end }}

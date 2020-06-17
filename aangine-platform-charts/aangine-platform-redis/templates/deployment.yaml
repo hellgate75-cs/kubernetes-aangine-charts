@@ -1,0 +1,127 @@
+{{- if .Values.services.redis.create -}}
+{{- $svcHttpPort := .Values.services.redis.service.httpPort -}}
+{{- $httpPort := .Values.services.redis.service.publicHttpPort -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-platform-redis.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-redis.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.redis.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-platform-redis.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-platform-redis.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.redis.hostname }}
+        {{- include "aangine-platform-redis.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.redis.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-platform-redis.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.redis.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.redis.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- if (.Values.services.redis.storage.enableVolume) }}
+        - name: redis-data-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ include "aangine-platform-redis.fullname" . }}-claim
+            readOnly: false
+       {{- else }}
+        - name: redis-data-persistent-storage
+          hostPath:
+            path: {{ include "aangine-platform-redis.alternativeDataFolder" . }}
+        {{- end }}
+#        - name: redis-config-host-dir
+#          hostPath:
+#            path: {{ .Values.services.redis.storage.hostConfigFolder }}
+      hostname: {{ .Values.services.redis.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - aangine-db
+            {{- if (.Values.services.subdomain) }}
+            - aangine-db.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - aangine-db.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - aangine-db.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.redis.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.redis.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.redis.securityContext | nindent 12 }}
+          image: {{ printf "%s:%s" .Values.services.redis.image.repository .Values.services.redis.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.redis.image.pullPolicy }}
+          ports:
+            - name: http-port
+              containerPort:  {{ $svcHttpPort }}
+              protocol: TCP
+          command: [ "redis-server", "/usr/local/etc/redis/redis.conf"]
+          env:
+            - name: redis_ALLOW_PRIVILEGED_PORTS
+              value: {{ .Values.services.redis.privilegedPorts | quote }}
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ $svcHttpPort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ $svcHttpPort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.services.redis.resources | nindent 12 }}
+          volumeMounts:
+            - name: redis-data-persistent-storage
+              mountPath: /data
+#            - name: redis-config-host-dir
+#              mountPath: /usr/local/etc/redis/redis.conf
+            
+      {{- with .Values.services.redis.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.redis.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.redis.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

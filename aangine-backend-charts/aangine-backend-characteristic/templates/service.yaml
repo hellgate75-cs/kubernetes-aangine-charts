@@ -1,0 +1,22 @@
+{{- if .Values.services.characteristic.create -}}
+{{- if .Values.services.characteristic.service.enabled -}}
+{{- $svcHttpPort := .Values.services.characteristic.service.httpPort -}}
+{{- $httpPort := .Values.services.characteristic.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.characteristic.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-characteristic.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-characteristic.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

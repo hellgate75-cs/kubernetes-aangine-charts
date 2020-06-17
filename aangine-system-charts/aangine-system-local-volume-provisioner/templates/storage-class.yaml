@@ -1,0 +1,14 @@
+{{- if .Values.services.local_volume_provisioner.create -}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-path
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-system-local-volume-provisioner.labels" . | nindent 4 }}
+provisioner: rancher.io/local-path
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+{{- end }}
+

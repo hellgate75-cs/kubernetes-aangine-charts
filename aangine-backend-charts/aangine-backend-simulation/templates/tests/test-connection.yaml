@@ -1,0 +1,18 @@
+{{- if .Values.services.simulation.create -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "aangine-backend-simulation.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-simulation.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ .Values.services.simulation.hostname }}:{{ .Values.services.simulation.service.httpPort }}']
+  restartPolicy: Always
+{{- end }}

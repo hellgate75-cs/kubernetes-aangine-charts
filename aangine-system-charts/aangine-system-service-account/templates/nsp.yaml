@@ -1,0 +1,53 @@
+{{- if .Values.services.service_account.create -}}
+{{- if .Values.services.productionInstance -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Namespace }}-global-np
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aangine-system-service-account.selectorLabels" . | nindent 6 }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{- include "aangine-system-service-account.selectorLabels" . | nindent 10 }}
+  {{ if (.Values.services.MongoDbPort) or (.Values.services.aangineNginxNodePort) or (.Values.services.jaegerPublicNodePort) or (.Values.services.jaegerCollectorZipkinPort) or (.Values.services.jaegerCollectorHttpPort) or (.Values.services.jaegerCollectorTChannelPort) or (.Values.services.consulPublicNodePort) or (.Values.services.redisPublicNodePort) }}
+  - ports:
+    {{ if (.Values.services.MongoDbPort) }}
+    - port: {{ .Values.services.MongoDbPort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.aangineNginxNodePort) }}
+    - port: {{ .Values.services.aangineNginxNodePort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.jaegerPublicNodePort) }}
+    - port: {{ .Values.services.jaegerPublicNodePort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.jaegerCollectorZipkinPort) }}
+    - port: {{ .Values.services.jaegerCollectorZipkinPort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.jaegerCollectorHttpPort) }}
+    - port: {{ .Values.services.jaegerCollectorHttpPort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.jaegerCollectorTChannelPort) }}
+    - port: {{ .Values.services.jaegerCollectorTChannelPort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.consulPublicNodePort) }}
+    - port: {{ .Values.services.consulPublicNodePort }}
+      protocol: TCP
+    {{ end }}
+    {{ if (.Values.services.redisPublicNodePort) }}
+    - port: {{ .Values.services.redisPublicNodePort }}
+      protocol: TCP
+    {{ end }}
+  {{ end }}
+{{- end -}}
+{{- end -}}

@@ -1,0 +1,1181 @@
+apiVersion: v1
+entries:
+  aangine-backend-auth:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0583887+01:00"
+    description: Aangine Auth Service Node Chart
+    digest: d55a376f4d78aef272662d854bd66246ecfe1a5a7ad38f27d7e57d3f4548bb84
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-auth
+    type: application
+    urls:
+    - aangine-backend-auth-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0583887+01:00"
+    description: Aangine Auth Service Node Chart
+    digest: fbbf60f9eafb1519504c07fe75a2ea3080fe06d9da77c541f2dc2c7eaf69c5f5
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-auth
+    type: application
+    urls:
+    - aangine-backend-auth-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0573882+01:00"
+    description: Aangine Auth Service Node Chart
+    digest: 2e7210de544d1af05f6d47153452737d651db117050f3beae23f97f701e85b70
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-auth
+    type: application
+    urls:
+    - aangine-backend-auth-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-business-unit:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.061389+01:00"
+    description: Aangine Business Unit Service Node Chart
+    digest: 90324319768295561d70c8eb945054fd7f497547c81dee5485275eb20ffcd041
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-business-unit
+    type: application
+    urls:
+    - aangine-backend-business-unit-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0603886+01:00"
+    description: Aangine Business Unit Service Node Chart
+    digest: d85b3ee08fe70a3512c4877eb61595d9e752209d195429fe9d356f9b1142424d
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-business-unit
+    type: application
+    urls:
+    - aangine-backend-business-unit-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0593896+01:00"
+    description: Aangine Business Unit Service Node Chart
+    digest: aaafaf1b165885c842b5b7e58261f995c7ac6c5566a40a659c0db737c4e56090
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-business-unit
+    type: application
+    urls:
+    - aangine-backend-business-unit-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-calendar:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0633903+01:00"
+    description: Aangine Calendar Service Node Chart
+    digest: f28b9b69b743174508ed4240cb2b9703fcce889528ddd5c540353ff8a81e0e3f
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-calendar
+    type: application
+    urls:
+    - aangine-backend-calendar-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0623896+01:00"
+    description: Aangine Calendar Service Node Chart
+    digest: b7f36a42d7a01fdbd123593a5fa550f557c68877f6e0360b21045d92b6f7b6c8
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-calendar
+    type: application
+    urls:
+    - aangine-backend-calendar-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.061389+01:00"
+    description: Aangine Calendar Service Node Chart
+    digest: ed99cfcfa9139bc12bec1097422210c9fe1527720b09539e3ec1672796fd860d
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-calendar
+    type: application
+    urls:
+    - aangine-backend-calendar-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-capacity:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0653886+01:00"
+    description: Aangine Capacity Service Node Chart
+    digest: fedeed28ac154eefb81c9fe20a191694d6788f4cdcc40beb2b3e517c14876dea
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-capacity
+    type: application
+    urls:
+    - aangine-backend-capacity-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0643891+01:00"
+    description: Aangine Capacity Service Node Chart
+    digest: aecc3bdc96f1a8b6f9480e54f615baf3a4fcf2fabd851d5e3e1883f68d25d3db
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-capacity
+    type: application
+    urls:
+    - aangine-backend-capacity-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0643891+01:00"
+    description: Aangine Capacity Service Node Chart
+    digest: 1a9b015be7a767f21b68976965406b6340d95f61843d3079865349b6a4c3df63
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-capacity
+    type: application
+    urls:
+    - aangine-backend-capacity-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-characteristic:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0673908+01:00"
+    description: Aangine Characteristic Service Node Chart
+    digest: 556a2febe58837498010b285525b021fe07d136f045fc169bb2d1c45c1358833
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-characteristic
+    type: application
+    urls:
+    - aangine-backend-characteristic-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0663887+01:00"
+    description: Aangine Characteristic Service Node Chart
+    digest: 40cf21eb0fe6f354042da0cd8986c304b40ff162b42103b81becdd6fa355c767
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-characteristic
+    type: application
+    urls:
+    - aangine-backend-characteristic-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0653886+01:00"
+    description: Aangine Characteristic Service Node Chart
+    digest: d4816a6535b3f60cd1820df073b4f7f401482baec869aef3327b73e75b9a2b52
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-characteristic
+    type: application
+    urls:
+    - aangine-backend-characteristic-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-composition-service:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0683897+01:00"
+    description: Composition Service Node Chart
+    digest: 0bc1d5c8be574061eb70cfdf305b7f8563294af6cc1e84ceac7f32fa401c0397
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-composition-service
+    type: application
+    urls:
+    - aangine-backend-composition-service-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0673908+01:00"
+    description: Composition Service Node Chart
+    digest: ff161cb005ff88ae63709b89e9d562ae14bc187dbdbaf14a2efb7f396993a510
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-composition-service
+    type: application
+    urls:
+    - aangine-backend-composition-service-1.0.2.tgz
+    version: 1.0.2
+  aangine-backend-excel-integration:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0703883+01:00"
+    description: Aangine Excel Integration Service Node Chart
+    digest: 150e46ea3f52f990107967f7e386c1d36ba2d81efa477d1cd931a3b4fbdd52f4
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-excel-integration
+    type: application
+    urls:
+    - aangine-backend-excel-integration-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0693885+01:00"
+    description: Aangine Excel Integration Service Node Chart
+    digest: 1a33ce6a316beaeb2220fd0480e22fbd5dd9c758a97343e3ce33487dc151cd61
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-excel-integration
+    type: application
+    urls:
+    - aangine-backend-excel-integration-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0683897+01:00"
+    description: Aangine Excel Integration Service Node Chart
+    digest: 5795a9c88c422740171e5ad6347c363038dc49cca15ba97a59bcaa3c089c890a
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-excel-integration
+    type: application
+    urls:
+    - aangine-backend-excel-integration-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-integration-persistence:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0723894+01:00"
+    description: Aangine Integration Persistence Service Node Chart
+    digest: 7fe89cb9a31312de4ab74d9c9a037e2af773f49185021744c27c7a975bdecda7
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-integration-persistence
+    type: application
+    urls:
+    - aangine-backend-integration-persistence-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0713895+01:00"
+    description: Aangine Integration Persistence Service Node Chart
+    digest: 99f4b67fee5ab63cdc7d9a7c06a1b6ebaf39df070d80351fb35d2b27d362ad83
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-integration-persistence
+    type: application
+    urls:
+    - aangine-backend-integration-persistence-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0703883+01:00"
+    description: Aangine Integration Persistence Service Node Chart
+    digest: 7814eeb317470c5c8e2d5e80f6d4c0f770cf459cec6c4c0948a66bd16f7ab2d5
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-integration-persistence
+    type: application
+    urls:
+    - aangine-backend-integration-persistence-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-methodology:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0743895+01:00"
+    description: Aangine Methodology Service Node Chart
+    digest: 3171093f348b57180c77a0e42e9816cb9e192b4af731064f6ceb20952b807e6a
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-methodology
+    type: application
+    urls:
+    - aangine-backend-methodology-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0743895+01:00"
+    description: Aangine Methodology Service Node Chart
+    digest: b722490024fe030cc76590c87e86d7c6453a83233167ddbf7d864eb6b967d3c8
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-methodology
+    type: application
+    urls:
+    - aangine-backend-methodology-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0733912+01:00"
+    description: Aangine Methodology Service Node Chart
+    digest: 2fd6623ba49bdcbe3eb419595682a7fcc1a8878d7f9a1fd420bb98e3defc14bf
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-methodology
+    type: application
+    urls:
+    - aangine-backend-methodology-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-portfolio-item:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0763883+01:00"
+    description: Aangine Portfolio Item Service Node Chart
+    digest: 253f69c33e92695998cfe58d175f892abd05d31f7e57ff37f123ad1fb907a3ae
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-portfolio-item
+    type: application
+    urls:
+    - aangine-backend-portfolio-item-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0753886+01:00"
+    description: Aangine Portfolio Item Service Node Chart
+    digest: c661524b1c370813da2d62bd66495626a7016c839d00e64d002334704790f6ec
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-portfolio-item
+    type: application
+    urls:
+    - aangine-backend-portfolio-item-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0753886+01:00"
+    description: Aangine Portfolio Item Service Node Chart
+    digest: 1e369225c02c540b64a046757b0c346057a4efaf9396f7883f48ed7215a0211e
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-portfolio-item
+    type: application
+    urls:
+    - aangine-backend-portfolio-item-1.0.1.tgz
+    version: 1.0.1
+  aangine-backend-ppm-integration-agent:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0773884+01:00"
+    description: Aangine PPM Integration Agent Service Chart
+    digest: 4a0fa6790df76fdac87d04fa1def7ce92857960a8dd87fc2d4544de44de4d675
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-ppm-integration-agent
+    type: application
+    urls:
+    - aangine-backend-ppm-integration-agent-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0773884+01:00"
+    description: Aangine PPM Integration Agent Service Chart
+    digest: 098b80dc03b411c6c6761742a041ee17c458ad82b7459a8a1a54fc33684cf200
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-ppm-integration-agent
+    type: application
+    urls:
+    - aangine-backend-ppm-integration-agent-1.0.2.tgz
+    version: 1.0.2
+  aangine-backend-ppm-integration-service:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0790846+01:00"
+    description: Aangine PPM Integration Service Chart
+    digest: e6a8879363c1d5a77a13fc398b6a88635a74c921d3fc6ddf8cee36eb7aef34da
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-ppm-integration-service
+    type: application
+    urls:
+    - aangine-backend-ppm-integration-service-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0783895+01:00"
+    description: Aangine PPM Integration Service Chart
+    digest: 963948be139b78bdf72f715645f88c76441b839359b851a4721be0c1fa7d9c9b
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-ppm-integration-service
+    type: application
+    urls:
+    - aangine-backend-ppm-integration-service-1.0.2.tgz
+    version: 1.0.2
+  aangine-backend-simulation:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0803882+01:00"
+    description: Aangine Simulation Service Node Chart
+    digest: 0098f32b90d1cd4ee14c1734906cdc1edaeb171e3cccf47ca17cb8e6b6361147
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-simulation
+    type: application
+    urls:
+    - aangine-backend-simulation-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0803882+01:00"
+    description: Aangine Simulation Service Node Chart
+    digest: c93738e2f911a018e890dd4d1b66b678458544d2663b3700bef0d6ab06484231
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-simulation
+    type: application
+    urls:
+    - aangine-backend-simulation-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0793885+01:00"
+    description: Aangine Simulation Service Node Chart
+    digest: 4055f563df875188139c5c4e349090a9a7fa803731937da14f61d3ee1228af37
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-backend-simulation
+    type: application
+    urls:
+    - aangine-backend-simulation-1.0.1.tgz
+    version: 1.0.1
+  aangine-database-mongodb:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0843887+01:00"
+    description: MongoDb Node Chart
+    digest: d5bd3e428d2fb461bcc1da034ba9478902e199095b5153856373ed339b50f4e3
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-database-mongodb
+    type: application
+    urls:
+    - aangine-database-mongodb-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0833892+01:00"
+    description: MongoDb Node Chart
+    digest: ca291a6d940f5ef7cd40bb0b8abd3f4910e0d6492f38761a9e1e130fcd9a879f
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-database-mongodb
+    type: application
+    urls:
+    - aangine-database-mongodb-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0823878+01:00"
+    description: MongoDb Node Chart
+    digest: d1084648bddd34db8ef2c4e071e3d675b562275afbe2923211fff1085fd1d1ba
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-database-mongodb
+    type: application
+    urls:
+    - aangine-database-mongodb-1.0.1.tgz
+    version: 1.0.1
+  aangine-frontend-aangine-ui:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0863886+01:00"
+    description: Aangine UI Node Chart
+    digest: 593cc71ccac9f438ddc36561fd2d0d3bd350807f187d20f77f95bdbe6298ad9e
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-frontend-aangine-ui
+    type: application
+    urls:
+    - aangine-frontend-aangine-ui-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0853891+01:00"
+    description: Aangine UI Node Chart
+    digest: b9185d906b4a0c0dd97f8c3922267b4133a66880e119f602ca8a53e87b064b15
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-frontend-aangine-ui
+    type: application
+    urls:
+    - aangine-frontend-aangine-ui-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0853891+01:00"
+    description: Aangine UI Node Chart
+    digest: d1da9ee810ae879c74b838e08c962f4c9748227b94dfab8e5657628eb76f0b05
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-frontend-aangine-ui
+    type: application
+    urls:
+    - aangine-frontend-aangine-ui-1.0.1.tgz
+    version: 1.0.1
+  aangine-platform-consul-cluster:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0893894+01:00"
+    description: Consul Clustered Nodes Chart
+    digest: 79a74ad5d5793d6d84b0d8599fde18c0ea4a4470458cf594d3589d89c821aae9
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-consul-cluster
+    type: application
+    urls:
+    - aangine-platform-consul-cluster-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0883887+01:00"
+    description: Consul Clustered Nodes Chart
+    digest: 1059073a8efbf74d74f85fe6c6feda777d1c12eb18d11ff0b92c0f88df780645
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-consul-cluster
+    type: application
+    urls:
+    - aangine-platform-consul-cluster-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0873887+01:00"
+    description: Consul Clustered Nodes Chart
+    digest: 1fc91c115d7ce92591bba732d86377126f0a839e7dc205fff69faa4d63a9cbb2
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-consul-cluster
+    type: application
+    urls:
+    - aangine-platform-consul-cluster-1.0.1.tgz
+    version: 1.0.1
+  aangine-platform-consul-single:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0914176+01:00"
+    description: Consul Single Node Chart
+    digest: 64da266c2e0237eae29116f6644edd567325d936572a0f0ea72c4c23d10b8be6
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-consul-single
+    type: application
+    urls:
+    - aangine-platform-consul-single-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0904194+01:00"
+    description: Consul Single Node Chart
+    digest: bb6b12bda49707cc60e36ca24c06588c128eaf63f0990b8aa30f0595a3faec12
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-consul-single
+    type: application
+    urls:
+    - aangine-platform-consul-single-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0904194+01:00"
+    description: Consul Single Node Chart
+    digest: 137464bade4a463058a72d408a4a1a2ca035479f7261425184e332ea833e058a
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-consul-single
+    type: application
+    urls:
+    - aangine-platform-consul-single-1.0.1.tgz
+    version: 1.0.1
+  aangine-platform-jaeger:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.094418+01:00"
+    description: Jaeger Tracing Node Chart
+    digest: 5bc2c13e40186edffe95a61f818f54289e76d5ef7a8cdac1dde896e8c31b4091
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-jaeger
+    type: application
+    urls:
+    - aangine-platform-jaeger-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0933881+01:00"
+    description: Jaeger Tracing Node Chart
+    digest: be03701a053721bfe815a13a1bcf0fb99ed733677b5922968986037cd17a5d0d
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-jaeger
+    type: application
+    urls:
+    - aangine-platform-jaeger-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0914176+01:00"
+    description: Jaeger Tracing Node Chart
+    digest: 6c98168c47659194d9c5c37c2da9c20ba09d89d855a300fdb631cead674ba5cb
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-jaeger
+    type: application
+    urls:
+    - aangine-platform-jaeger-1.0.1.tgz
+    version: 1.0.1
+  aangine-platform-nginx-no-ssl:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0964177+01:00"
+    description: NGnix No-SSL Node Chart
+    digest: 4146b4d0e52751e5faeb75d5d8df533215f800528b4fe05d86082d72dffb9c27
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-nginx-no-ssl
+    type: application
+    urls:
+    - aangine-platform-nginx-no-ssl-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0953897+01:00"
+    description: NGnix No-SSL Node Chart
+    digest: 323e774f54ae6771fa44b3e2a1166ba1f07fcdc49f72359d2e391c972265afe6
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-nginx-no-ssl
+    type: application
+    urls:
+    - aangine-platform-nginx-no-ssl-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.094418+01:00"
+    description: NGnix No-SSL Node Chart
+    digest: 1a725ca915c09da5bf781087338402d9e058463b10f5df02085acd254d6545bb
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-nginx-no-ssl
+    type: application
+    urls:
+    - aangine-platform-nginx-no-ssl-1.0.1.tgz
+    version: 1.0.1
+  aangine-platform-nginx-with-ssl:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.0984182+01:00"
+    description: NGnix No-SSL Node Chart
+    digest: b0dbd5165356f52ccf06ea4f21141c369bdd6c30d30c6cd3203a53dd8f053b9c
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-nginx-with-ssl
+    type: application
+    urls:
+    - aangine-platform-nginx-with-ssl-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.0974187+01:00"
+    description: NGnix No-SSL Node Chart
+    digest: e6ed5254450d52a1c0b0d3ad34127443215d38c2056a9f343b41d7d679a8f0c3
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-nginx-with-ssl
+    type: application
+    urls:
+    - aangine-platform-nginx-with-ssl-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0964177+01:00"
+    description: NGnix No-SSL Node Chart
+    digest: 5a1da746dfbed5a2b8504cd0e94d218c526c104fe91e96b35464f512296e7a96
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-nginx-with-ssl
+    type: application
+    urls:
+    - aangine-platform-nginx-with-ssl-1.0.1.tgz
+    version: 1.0.1
+  aangine-platform-redis:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.09939+01:00"
+    description: Redis Node Chart
+    digest: 2ac978b8bd94b7c0da12209050f4b8353cf04ac4a96a4b347ccb25bf7b0e01f2
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-redis
+    type: application
+    urls:
+    - aangine-platform-redis-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.09939+01:00"
+    description: Redis Node Chart
+    digest: 8240954d91947eae8143ec9a0f61a6ef4ebf9de657ac9df1cba0f0c72db8abb7
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-redis
+    type: application
+    urls:
+    - aangine-platform-redis-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.0987408+01:00"
+    description: Redis Node Chart
+    digest: e7df3a3ca96cf72ca116854d1515406158589d0830e1f8b56fe5aaa6f10da1de
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-platform-redis
+    type: application
+    urls:
+    - aangine-platform-redis-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-addson-config:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1013891+01:00"
+    description: Aangine System AddsOn Host Config Node Chart
+    digest: 5ba4cea2861f720a763e41ebe133a5600da44f8cc8f27edb76d62d0ceb81b36a
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-config
+    type: application
+    urls:
+    - aangine-system-addson-config-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1013891+01:00"
+    description: Aangine System AddsOn Host Config Node Chart
+    digest: 8b24e119793a94e95317ee1d67f66019d230f4b7b9b0cb53eb4226883d672a31
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-config
+    type: application
+    urls:
+    - aangine-system-addson-config-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1003893+01:00"
+    description: Aangine System AddsOn Host Config Node Chart
+    digest: 73cbd48c4b9fe020f91db79568a8603394f417042981ba1edfe8b2b7887a31c8
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-config
+    type: application
+    urls:
+    - aangine-system-addson-config-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-addson-mockup-data:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1033883+01:00"
+    description: Aangine Mocked Data Install AddsOn Node Chart
+    digest: 0f20962febf0d0eb6126211984db90fdb0d9b503a4e59d9aaf90cb2cad9daa21
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-mockup-data
+    type: application
+    urls:
+    - aangine-system-addson-mockup-data-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1033883+01:00"
+    description: Aangine Mocked Data Install AddsOn Node Chart
+    digest: 3dc8c3b773cca884d777b0ab58a0ca1d27dc8107c262d90e3ee5d374c938272a
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-mockup-data
+    type: application
+    urls:
+    - aangine-system-addson-mockup-data-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1023901+01:00"
+    description: Aangine Mocked Data Install AddsOn Node Chart
+    digest: 7173901bb444a03df07fbd1d7cd8a0bcfd84d4104c2c31089bc8e2c0b59d7951
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-mockup-data
+    type: application
+    urls:
+    - aangine-system-addson-mockup-data-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-addson-storage:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1053871+01:00"
+    description: Aangine Storage AddsOn Host Config Node Chart
+    digest: 7d25abe705305113a292b141ccc0b40d545cb7271d2ab5c3d608b4369866660b
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-storage
+    type: application
+    urls:
+    - aangine-system-addson-storage-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1043868+01:00"
+    description: Aangine Storage AddsOn Host Config Node Chart
+    digest: 96af58a3d891c599e36b773a5c63129be7693bbbd62414bb62f28e07cd968636
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-storage
+    type: application
+    urls:
+    - aangine-system-addson-storage-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1043868+01:00"
+    description: Aangine Storage AddsOn Host Config Node Chart
+    digest: 587b2e1c30260aaf6c20c0249e16a0998f70fe0a881af596b3df8813fb946ec7
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-addson-storage
+    type: application
+    urls:
+    - aangine-system-addson-storage-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-bridged-networking:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1073869+01:00"
+    description: Bridged Networking Interface Chart
+    digest: 110327cebc12de5fc3194204bef37e81f7fc3b719aa32d240fd4421c2ada22ef
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-bridged-networking
+    type: application
+    urls:
+    - aangine-system-bridged-networking-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1063872+01:00"
+    description: Bridged Networking Interface Chart
+    digest: 502f1e338258b877637597a8fdfbf1632013cbe72cd7b08f59d5474c2ce1f42b
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-bridged-networking
+    type: application
+    urls:
+    - aangine-system-bridged-networking-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1053871+01:00"
+    description: Bridged Networking Interface Chart
+    digest: 588826c4e623c90e38fd60076ae07f23e1582fa520891e051b55d09231b9532b
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-bridged-networking
+    type: application
+    urls:
+    - aangine-system-bridged-networking-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-commander:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1073869+01:00"
+    description: Aangine System Commander Service Chart
+    digest: 048db6c4b4859a384395853670d44e4678a142058f2b3c2e1a86adfcb6f52523
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-commander
+    type: application
+    urls:
+    - aangine-system-commander-1.0.3.tgz
+    version: 1.0.3
+  aangine-system-dns-service:
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1083888+01:00"
+    description: System DNS Service Node Chart
+    digest: e570529b331473a51b46a31fc200f50e5424e5cc0127fb344ec4e48b5b2358e4
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-dns-service
+    type: application
+    urls:
+    - aangine-system-dns-service-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-local-volume-provisioner:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1093877+01:00"
+    description: Aangine Host Volume Provisioner Service Chart
+    digest: e9c755921dc3e9d6d4ced2996cd9b3cbb07d5516cd48871d38dfc557895e968b
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-local-volume-provisioner
+    type: application
+    urls:
+    - aangine-system-local-volume-provisioner-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1083888+01:00"
+    description: Aangine Host Volume Provisioner Service Chart
+    digest: da7b0df73c17ed2e661b1e75c644976ff1558cdc2c837455b5d8ff293c224d59
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-local-volume-provisioner
+    type: application
+    urls:
+    - aangine-system-local-volume-provisioner-1.0.2.tgz
+    version: 1.0.2
+  aangine-system-network-manager:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1103886+01:00"
+    description: Aangine Network Manager Service Chart
+    digest: 937c3548dea15accc50483487d7c43275c5a0d0a1cbb48df4d99aaa6f61fd555
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-network-manager
+    type: application
+    urls:
+    - aangine-system-network-manager-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1103886+01:00"
+    description: Aangine Network Manager Service Chart
+    digest: bc228bdf8ff2ff090aa52983bd38475b6ba80782f8e1bbeb2d59a0910b900b92
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-network-manager
+    type: application
+    urls:
+    - aangine-system-network-manager-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1093877+01:00"
+    description: Aangine Network Manager Service Chart
+    digest: bbb3af148ab587f9bd0c5d70d9767424b0b06ca95f4c0d12e03e257c8c61f2e1
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-network-manager
+    type: application
+    urls:
+    - aangine-system-network-manager-1.0.1.tgz
+    version: 1.0.1
+  aangine-system-service-account:
+  - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2020-05-20T00:54:08.1133878+01:00"
+    description: Aangine System Service Account Chart
+    digest: 63cb2a196a7950dc73de370a1302a5c1d0eb571f86f2486c615e96a0713583e3
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-service-account
+    type: application
+    urls:
+    - aangine-system-service-account-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2020-05-20T00:54:08.1133878+01:00"
+    description: Aangine System Service Account Chart
+    digest: f828da1557bab0186310706264eb77172031abe93761405a690afee779073e3c
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-service-account
+    type: application
+    urls:
+    - aangine-system-service-account-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2020-05-20T00:54:08.1113914+01:00"
+    description: Aangine System Service Account Chart
+    digest: fc8f92636c8ab5eda156ecc77d22243880be213cbe87336975639875dfd5f572
+    maintainers:
+    - email: fabrizio.torelli@optiim.com
+      name: Fabrizio Torelli
+      url: https://www.linkedin.com/in/fabriziotorelli/
+    name: aangine-system-service-account
+    type: application
+    urls:
+    - aangine-system-service-account-1.0.1.tgz
+    version: 1.0.1
+generated: "2020-05-20T00:54:08.0563888+01:00"

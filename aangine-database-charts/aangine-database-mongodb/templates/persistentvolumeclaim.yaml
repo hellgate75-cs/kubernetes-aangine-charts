@@ -1,0 +1,37 @@
+{{- if .Values.services.mongodb.create -}}
+{{- if .Values.services.mongodb.storage.enableVolume -}}
+{{- if .Values.services.mongodb.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-databasemongodb.fullname" . }}-claim-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-databasemongodb.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-mongodb-pv-1
+  storageClassName: {{ include "aangine-databasemongodb.storageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.mongodb.storage.capacity }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-databasemongodb.fullname" . }}-claim-2
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-databasemongodb.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-mongodb-pv-2
+  storageClassName:  {{ include "aangine-databasemongodb.configStorageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.mongodb.storage.capacity2 }}
+{{- end }}
+{{- end }}
+{{- end }}

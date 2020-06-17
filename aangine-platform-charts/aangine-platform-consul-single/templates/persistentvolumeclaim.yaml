@@ -1,0 +1,21 @@
+{{- if .Values.services.consul.single.create -}}
+{{- if .Values.services.consul.storage.enableVolume -}}
+{{- if .Values.services.consul.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-platform-consul-single.fullname" . }}-claim
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-single.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-consul-single-pv-1
+  storageClassName: {{ include "aangine-platform-consul-single.storageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.consul.storage.capacity }}
+{{- end }}
+{{- end }}
+{{- end }}

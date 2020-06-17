@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aangine-path-storage
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aangine-path-provisioner-service-account
+  namespace: aangine-path-storage
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: aangine-path-provisioner-role
+rules:
+- apiGroups: [""]
+  resources: ["nodes", "persistentvolumeclaims"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["endpoints", "persistentvolumes", "pods"]
+  verbs: ["*"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: aangine-path-provisioner-bind
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: aangine-path-provisioner-role
+subjects:
+- kind: ServiceAccount
+  name: aangine-path-provisioner-service-account
+  namespace: aangine-path-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aangine-path-provisioner
+  namespace: aangine-path-storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aangine-path-provisioner
+  template:
+    metadata:
+      labels:
+        app: aangine-path-provisioner
+    spec:
+      serviceAccountName: aangine-path-provisioner-service-account
+      containers:
+      - name: aangine-path-provisioner
+        image: rancher/local-path-provisioner:v0.0.12
+        imagePullPolicy: IfNotPresent
+        command:
+        - local-path-provisioner
+        - --debug
+        - start
+        - --provisioner-name
+        - rancher.io/aangine-path
+        - --namespace
+        - aangine-path-storage
+        - --config
+        - /etc/config/config.json
+        volumeMounts:
+        - name: aangine-config-volume
+          mountPath: /etc/config/
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      volumes:
+        - name: aangine-config-volume
+          configMap:
+            name: aangine-path-config
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: aangine-path
+provisioner: rancher.io/aangine-path
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: aangine-path-config
+  namespace: aangine-path-storage
+data:
+  config.json: |-
+        {
+                "nodePathMap":[
+                {
+                        "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
+                        "paths":["/mnt/sda"]
+                }
+                ]
+        }
+

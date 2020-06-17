@@ -1,0 +1,139 @@
+{{- if .Values.services.composition_service.create -}}
+{{- $svcHttpPort := .Values.services.composition_service.service.httpPort -}}
+{{- $httpPort := .Values.services.composition_service.service.publicHttpPort -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-backend-composition-service.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-composition-service.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.composition_service.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-backend-composition-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-backend-composition-service.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.composition_service.hostname }}
+        {{- include "aangine-backend-composition-service.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.composition_service.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-backend-composition-service.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.composition_service.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.composition_service.podSecurityContext | nindent 8 }}
+      hostname: {{ .Values.services.composition_service.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - {{ .Values.services.MongoDbExternalName }}
+            {{- if (.Values.services.subdomain) }}
+            - {{ .Values.services.MongoDbExternalName }}.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - {{ .Values.services.MongoDbExternalName }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - {{ .Values.services.MongoDbExternalName }}.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.composition_service.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.composition_service.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.composition_service.securityContext | nindent 12 }}
+          image: {{ printf "%s/%s:%s" .Values.services.composition_service.image.repository .Values.services.composition_service.image.repositoryBranch .Values.services.composition_service.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.composition_service.image.pullPolicy }}
+          ports:
+            - name: http-port
+              containerPort:  {{ $svcHttpPort }}
+              protocol: TCP
+          env:
+            {{ if (.Values.services.enableGloballyJaeger) }}
+            - name: OPENTRACING_JAEGER_PORT
+              value: {{ .Values.services.jaegerMsPrivateUdpPort | quote }}
+            - name: OPENTRACING_JAEGER_HOST
+              value: {{ .Values.services.jaegerMsPrivateHostname | quote }}
+            - name: OPENTRACING_JAEGER_LOG_SPANS
+              value: {{ .Values.services.jaegerMsLogSpansEnabled | quote }}
+            - name: OPENTRACING_JAEGER_LOG-SPANS
+              value: {{ .Values.services.jaegerMsLogSpansEnabled | quote }}
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: {{ .Values.services.jaegerMsTracingEnabled | quote }}
+            {{ else }}
+            - name: OPENTRACING_JAEGER_LOG_SPANS
+              value: "false"
+            - name: OPENTRACING_JAEGER_LOG-SPANS
+              value: "false"
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: "false"
+            {{ end}}
+            - name: SPRING_CLOUD_MONGODB_HOST
+              value: {{ .Values.services.MongoDbExternalName | quote}}
+            - name: SPRING_CLOUD_MONGODB_PORT
+              value: {{ .Values.services.mongoDbPort | quote }}
+            - name: SPRING_CLOUD_CONSUL_HOST
+              value: {{ .Values.services.consulHostname | quote}}
+            - name: SPRING_CLOUD_CONSUL_PORT
+              value: {{ .Values.services.consulPublicNodePort | quote }}
+            - name: CONSUL_HOST
+              value: {{ .Values.services.consulHostname | quote}}
+            - name: CONSUL_PORT
+              value: {{ .Values.services.consulPublicNodePort | quote }}
+          command:
+            - "node"
+            - "dist/index.js"
+            - "{{ printf "serviceAddr=%s" .Values.services.composition_service.hostname  }}.{{ include "aangine-backend-composition-service.domainName" . }}"
+#          livenessProbe:
+#            httpGet:
+#              path: /portfolio-item/list?format=json
+#              port: {{ $svcHttpPort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+#          readinessProbe:
+#            httpGet:
+#              path: /portfolio-item/list?format=json
+#              port: {{ $svcHttpPort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.services.composition_service.resources | nindent 12 }}
+      {{- with .Values.services.composition_service.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.composition_service.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.composition_service.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

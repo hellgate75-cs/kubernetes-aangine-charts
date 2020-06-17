@@ -1,0 +1,23 @@
+{{- if .Values.services.auth.create -}}
+{{- if .Values.services.auth.service.enabled -}}
+{{- $svcHttpPort := .Values.services.auth.service.httpPort -}}
+{{- $httpPort := .Values.services.auth.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.auth.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-auth.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+#  type: {{ .Values.services.auth.service.type }}
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-auth.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,106 @@
+{{- if .Values.services.mongodb.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-databasemongodb.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-databasemongodb.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.mongodb.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-databasemongodb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-databasemongodb.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.mongodb.hostname }}
+        {{- include "aangine-databasemongodb.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.mongodb.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-databasemongodb.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.mongodb.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.mongodb.podSecurityContext | nindent 8 }}
+      volumes:
+      
+      {{- if (.Values.services.mongodb.storage.enableVolume) }}
+        - name: mongodb-data-persistent-storage-db
+          persistentVolumeClaim:
+            claimName: {{ include "aangine-databasemongodb.fullname" . }}-claim-1
+            readOnly: false
+        - name: mongodb-data-persistent-storage-configdb
+          persistentVolumeClaim:
+            claimName: {{ include "aangine-databasemongodb.fullname" . }}-claim-2
+            readOnly: false
+      {{- else }}
+        - name: mongodb-data-persistent-storage-db
+          hostPath:
+            path: {{ include "aangine-databasemongodb.alternativeDataFolder" . }}/data/db
+        - name: mongodb-data-persistent-storage-configdb
+          hostPath:
+            path: {{ include "aangine-databasemongodb.alternativeDataFolder" . }}/data/configdb
+      {{- end }}
+        - name: mongodb-config-host-dir
+          hostPath:
+            path: {{ .Values.services.mongodb.storage.hostConfigFolder }}
+      hostname: {{ .Values.services.mongodb.hostname }}
+      hostAliases:
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.mongodb.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.mongodb.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.mongodb.securityContext | nindent 12 }}
+          image: {{ printf "%s:%s" .Values.services.mongodb.image.repository .Values.services.mongodb.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.mongodb.image.pullPolicy }}
+          ports:
+            - name: tcp-port
+              containerPort:  {{ .Values.services.mongodb.service.httpPort }}
+              protocol: TCP
+          env:
+            {{- toYaml .Values.services.mongodb.environment | nindent 12 }}
+          resources:
+            {{- toYaml .Values.services.mongodb.resources | nindent 12 }}
+          volumeMounts:
+            - name: mongodb-data-persistent-storage-db
+              mountPath: /data/db
+            - name: mongodb-data-persistent-storage-configdb
+              mountPath: /data/configdb
+            - name: mongodb-config-host-dir
+              mountPath: /mongo/config
+            
+      {{- with .Values.services.mongodb.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.mongodb.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.mongodb.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

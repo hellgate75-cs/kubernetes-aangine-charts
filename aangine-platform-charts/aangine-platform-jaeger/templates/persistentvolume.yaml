@@ -1,0 +1,32 @@
+{{- if .Values.services.jaeger.create -}}
+{{- if .Values.services.jaeger.storage.enableVolume -}}
+{{- if .Values.services.jaeger.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-jaeger-single-pv-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.jaeger.storage.capacity }}
+  {{- with .Values.services.jaeger.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.jaeger.storage.pvrp }}
+  storageClassName: {{ include "aangine-platform-jaeger.storageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-platform-jaeger.mountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+{{- end }}
+{{- end }}
+{{- end }}

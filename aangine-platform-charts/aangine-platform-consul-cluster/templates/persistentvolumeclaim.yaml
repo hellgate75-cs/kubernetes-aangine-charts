@@ -1,0 +1,53 @@
+{{- if .Values.services.consul.cluster.create -}}
+{{- if .Values.services.consul.storage.enableVolume -}}
+{{- if .Values.services.consul.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-platform-consul-cluster.fullname" . }}-claim-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-consul-cluster-pv-1
+  storageClassName: {{ include "aangine-platform-consul-cluster.storageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.consul.storage.capacity }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-platform-consul-cluster.fullname" . }}-claim-2
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-consul-cluster-pv-2
+  storageClassName: {{ include "aangine-platform-consul-cluster.secondStorageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.consul.storage.capacity }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-platform-consul-cluster.fullname" . }}-claim-3
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-consul-cluster-pv-3
+  storageClassName: {{ include "aangine-platform-consul-cluster.thirdStorageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.consul.storage.capacity }}
+{{- end }}
+{{- end }}
+{{- end }}

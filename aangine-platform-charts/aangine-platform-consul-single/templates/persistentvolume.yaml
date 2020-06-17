@@ -1,0 +1,32 @@
+{{- if .Values.services.consul.single.create -}}
+{{- if .Values.services.consul.storage.enableVolume -}}
+{{- if .Values.services.consul.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-consul-single-pv-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-single.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.consul.storage.capacity }}
+  {{- with .Values.services.consul.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.consul.storage.pvrp }}
+  storageClassName: {{ include "aangine-platform-consul-single.storageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-platform-consul-single.mountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+{{- end }}
+{{- end }}
+{{- end }}

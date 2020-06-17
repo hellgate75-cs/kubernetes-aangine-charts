@@ -1,0 +1,22 @@
+{{- if .Values.services.excel_integration.create -}}
+{{- if .Values.services.excel_integration.service.enabled -}}
+{{- $svcHttpPort := .Values.services.excel_integration.service.httpPort -}}
+{{- $httpPort := .Values.services.excel_integration.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.excel_integration.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-excel-integration.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-excel-integration.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

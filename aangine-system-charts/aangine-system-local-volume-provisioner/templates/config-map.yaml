@@ -1,0 +1,19 @@
+{{- if .Values.services.local_volume_provisioner.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aangine-system-local-volume-provisioner.configMapName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-system-local-volume-provisioner.labels" . | nindent 4 }}
+data:
+  config.json: |-
+        {
+                "nodePathMap":[
+                {
+                        "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
+                        "paths":["{{ include "aangine-system-local-volume-provisioner.storagePath" . }}"]
+                }
+                ]
+        }
+{{- end }}

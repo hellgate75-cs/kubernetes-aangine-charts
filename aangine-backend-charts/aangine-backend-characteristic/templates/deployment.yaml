@@ -1,0 +1,156 @@
+{{- if .Values.services.characteristic.create -}}
+{{- $svcHttpPort := .Values.services.characteristic.service.httpPort -}}
+{{- $httpPort := .Values.services.characteristic.service.publicHttpPort -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-backend-characteristic.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-characteristic.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.characteristic.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-backend-characteristic.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-backend-characteristic.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.characteristic.hostname }}
+        {{- include "aangine-backend-characteristic.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.characteristic.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-backend-characteristic.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.characteristic.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.characteristic.podSecurityContext | nindent 8 }}
+      hostname: {{ .Values.services.characteristic.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - {{ .Values.services.MongoDbExternalName }}
+            {{- if (.Values.services.subdomain) }}
+            - {{ .Values.services.MongoDbExternalName }}.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - {{ .Values.services.MongoDbExternalName }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - {{ .Values.services.MongoDbExternalName }}.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.characteristic.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.characteristic.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.characteristic.securityContext | nindent 12 }}
+          image: {{ printf "%s/%s:%s" .Values.services.characteristic.image.repository .Values.services.characteristic.image.repositoryBranch .Values.services.characteristic.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.characteristic.image.pullPolicy }}
+          ports:
+            - name: http-port
+              containerPort:  {{ $svcHttpPort }}
+              protocol: TCP
+          env:
+            {{ if (.Values.services.enableGloballyJaeger) }}
+            - name: OPENTRACING_JAEGER_PORT
+              value: {{ .Values.services.jaegerMsPrivateUdpPort | quote }}
+            - name: OPENTRACING_JAEGER_HOST
+              value: {{ .Values.services.jaegerMsPrivateHostname | quote }}
+            - name: OPENTRACING_JAEGER_LOG_SPANS
+              value: {{ .Values.services.jaegerMsLogSpansEnabled | quote }}
+            - name: OPENTRACING_JAEGER_LOG-SPANS
+              value: {{ .Values.services.jaegerMsLogSpansEnabled | quote }}
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: {{ .Values.services.jaegerMsTracingEnabled | quote }}
+            {{ else }}
+            - name: OPENTRACING_JAEGER_LOG_SPANS
+              value: "false"
+            - name: OPENTRACING_JAEGER_LOG-SPANS
+              value: "false"
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: "false"
+            {{ end}}
+            - name: SPRING_CLOUD_MONGODB_HOST
+              value: {{ .Values.services.MongoDbExternalName | quote}}
+            - name: SPRING_CLOUD_MONGODB_PORT
+              value: {{ .Values.services.mongoDbPort | quote }}
+            - name: SPRING_CLOUD_CONSUL_HOST
+              value: {{ .Values.services.consulHostname | quote}}
+            - name: SPRING_CLOUD_CONSUL_PORT
+              value: {{ .Values.services.consulPublicNodePort | quote }}
+            - name: CONSUL_HOST
+              value: {{ .Values.services.consulHostname | quote}}
+            - name: CONSUL_PORT
+              value: {{ .Values.services.consulPublicNodePort | quote }}
+            {{- toYaml .Values.services.characteristic.environment | nindent 12 }}
+          command:
+            - "java"
+            - "-Djava.security.egd=file:/dev/./urandom"
+            - "-jar"
+            - {{ .Values.services.characteristic.jarFileLocation | quote }}
+            - {{ printf "--spring.profiles.active=%s" .Values.services.characteristic.springProfiles | quote }}
+            - {{ printf "--spring.cloud.consul.host=%s" .Values.services.consulHostname | quote }}
+            - {{ printf "--spring.cloud.consul.port=%s" .Values.services.consulPublicNodePort | quote }}
+            - {{ printf "--spring.data.mongodb.host=%s" .Values.services.MongoDbExternalName | quote }}
+            - {{ printf "--spring.data.mongodb.port=%s" .Values.services.mongoDbPort | quote }}
+            {{ if (.Values.services.enableGloballyJaeger) }}
+            - {{ printf "--opentracing.jaeger.udp-sender.host=%s" .Values.services.jaegerMsPrivateHostname | quote }}
+            - {{ printf "--opentracing.jaeger.udp-sender.port=%s" .Values.services.jaegerMsPrivateUdpPort | quote }}
+            - {{ printf "--opentracing.jaeger.enabled=%s"  .Values.services.jaegerMsTracingEnabled | quote }}
+            - {{ printf "--opentracing.jaeger.log-spans=%s"  .Values.services.jaegerMsLogSpansEnabled | quote }}
+            {{ else }}
+            - "--opentracing.jaeger.enabled=false"
+            - "--opentracing.jaeger.log-spans=false"
+            {{ end}}
+          workingDir: /opt/app
+#          livenessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: {{ $svcHttpPort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+#          readinessProbe:
+#            httpGet:
+#              path: /actuator/health
+#              port: {{ $svcHttpPort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.services.characteristic.resources | nindent 12 }}
+      {{- with .Values.services.characteristic.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.characteristic.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.characteristic.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

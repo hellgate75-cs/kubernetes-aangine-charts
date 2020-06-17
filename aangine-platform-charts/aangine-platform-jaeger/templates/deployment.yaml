@@ -1,0 +1,179 @@
+{{- if .Values.services.jaeger.create -}}
+{{- $svcTcpPort1 := .Values.services.jaeger.service.tcpPort1 -}}
+{{- $tcpPort1 := .Values.services.jaeger.service.publicTcpPort1 -}}
+{{- $svcTcpPort2 := .Values.services.jaeger.service.tcpPort2 -}}
+{{- $tcpPort2 := .Values.services.jaeger.service.publicTcpPort2 -}}
+{{- $svcTcpPort3 := .Values.services.jaeger.service.tcpPort3 -}}
+{{- $tcpPort3 := .Values.services.jaeger.service.publicTcpPort3 -}}
+{{- $svcTcpPort4 := .Values.services.jaeger.service.tcpPort4 -}}
+{{- $tcpPort4 := .Values.services.jaeger.service.publicTcpPort4 -}}
+{{- $svcTcpPort5 := .Values.services.jaeger.service.tcpPort5 -}}
+{{- $tcpPort5 := .Values.services.jaeger.service.publicTcpPort5 -}}
+{{- $svcTcpPort6 := .Values.services.jaeger.service.tcpPort6 -}}
+{{- $tcpPort6 := .Values.services.jaeger.service.publicTcpPort6 -}}
+{{- $svcTcpPort7 := .Values.services.jaeger.service.tcpPort7 -}}
+{{- $tcpPort7 := .Values.services.jaeger.service.publicTcpPort7 -}}
+{{- $svcUdpPort1 := .Values.services.jaeger.service.udpPort1 -}}
+{{- $updPort1 := .Values.services.jaeger.service.publicUdpPort1 -}}
+{{- $svcUdpPort2 := .Values.services.jaeger.service.udpPort2 -}}
+{{- $udpPort2 := .Values.services.jaeger.service.publicUdpPort2 -}}
+{{- $svcUdpPort3 := .Values.services.jaeger.service.udpPort3 -}}
+{{- $udpPort3 := .Values.services.jaeger.service.publicUdpPort3 -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-platform-jaeger.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.jaeger.replicaCount }}
+  strategy:
+    type: {{ .Values.services.jaeger.strategyType }}
+  selector:
+    matchLabels:
+      {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-platform-jaeger.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.jaeger.hostname }}
+        {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 8 }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ $svcTcpPort4 | quote }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- if (.Values.services.jaeger.imagePullSecrets) }}
+    {{- with .Values.services.jaeger.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-platform-jaeger.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      {{- if (.Values.services.jaeger.podSecurityContext) }}
+      securityContext:
+        {{- toYaml .Values.services.jaeger.podSecurityContext | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.jaeger.restartPolicy }}
+      volumes:
+      {{- if (.Values.services.jaeger.storage.enableVolume) }}
+        - name: jaeger-data-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ include "aangine-platform-jaeger.fullname" . }}-claim
+            readOnly: false
+      {{- else }}
+        - name: jaeger-data-persistent-storage
+          hostPath:
+            path: {{ include "aangine-platform-jaeger.alternativeDataFolder" . }}
+      {{- end }}
+#        - name: jaeger-config-host-dir
+#          hostPath:
+#            path: {{ .Values.services.jaeger.storage.hostConfigFolder }}
+      hostname: {{ .Values.services.jaeger.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - aangine-db
+            {{- if (.Values.services.subdomain) }}
+            - aangine-db.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - aangine-db.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - aangine-db.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.jaeger.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.jaeger.containerName }}
+          securityContext:
+           {{- toYaml .Values.services.jaeger.securityContext | nindent 12 }}
+          image: {{ printf "%s:%s" .Values.services.jaeger.image.repository .Values.services.jaeger.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.jaeger.image.pullPolicy }}
+          ports:
+            - name: tcp-port-1
+              containerPort: {{ $svcTcpPort1 }}
+              protocol: TCP
+            - name: tcp-port-2
+              containerPort:  {{ $svcTcpPort2 }}
+              protocol: TCP
+            - name: tcp-port-3
+              containerPort:  {{ $svcTcpPort3 }}
+              protocol: TCP
+            - name: tcp-port-4
+              containerPort:  {{ $svcTcpPort4 }}
+            - name: tcp-port-5
+              containerPort:  {{ $svcTcpPort5 }}
+            - name: tcp-port-6
+              containerPort:  {{ $svcTcpPort6 }}
+              protocol: TCP
+            - name: tcp-port-7
+              containerPort:  {{ $svcTcpPort7 }}
+              protocol: TCP
+            - name: udp-port-1
+              containerPort:  {{ $svcUdpPort1 }}
+              protocol: UDP
+            - name: udp-port-2
+              containerPort:  {{ $svcUdpPort2 }}
+              protocol: UDP
+            - name: udp-port-3
+              containerPort:  {{ $svcUdpPort3 }}
+              protocol: UDP
+#          command: [ "jaeger-server", "/usr/local/etc/jaeger/jaeger.conf"]
+          env:
+            - name: COLLECTOR_ZIPKIN_HTTP_PORT
+              value: {{ $.Values.services.jaegerCollectorZipkinPort | quote }}         
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ $svcTcpPort4 }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ $svcTcpPort4 }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.services.jaeger.resources | nindent 12 }}
+          volumeMounts:
+            - name: jaeger-data-persistent-storage
+              mountPath: /tmp
+#            - name: jaeger-config-host-dir
+#              mountPath: /usr/local/etc/jaeger/jaeger.conf
+            
+      {{- with .Values.services.jaeger.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.jaeger.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.jaeger.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

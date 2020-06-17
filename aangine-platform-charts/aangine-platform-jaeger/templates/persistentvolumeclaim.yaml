@@ -1,0 +1,21 @@
+{{- if .Values.services.jaeger.create -}}
+{{- if .Values.services.jaeger.storage.enableVolume -}}
+{{- if .Values.services.jaeger.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-platform-jaeger.fullname" . }}-claim
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-jaeger-single-pv-1
+  storageClassName: {{ include "aangine-platform-jaeger.storageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.jaeger.storage.capacity }}
+{{- end }}
+{{- end }}
+{{- end }}

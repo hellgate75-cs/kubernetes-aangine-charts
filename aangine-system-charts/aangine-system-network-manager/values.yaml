@@ -1,0 +1,46 @@
+services:
+  subdomain: aangine
+  mongoDbIp: 0.0.0.0
+  affinityNodes: []
+  dnsPolicy: ClusterFirst
+  network_manager:
+    create: true
+    replicaCount: 1
+    appName: network-manager
+    image:
+      repository: registry.gitlab.com/continuous-software/platform-service-network
+      branch: development
+      tag: latest
+      pullPolicy: IfNotPresent
+    statefulSet:
+      # Annotations to add to the cluster role
+      annotations: {}
+      # The name of the statful set to use.
+      name: network-manager-statefulset
+    environment:
+      - name: NETWORK_NAME
+        value: "services"
+    dns:
+      nameservers:
+        - 172.18.0.3
+        - 172.18.0.4
+        - 172.18.0.5
+      searches:
+        - service
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+    nodeSelector: {}
+    affinity: {}
+    tolerations:
+      - operator: Exists
+        effect: NoSchedule
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: aangine-service-account

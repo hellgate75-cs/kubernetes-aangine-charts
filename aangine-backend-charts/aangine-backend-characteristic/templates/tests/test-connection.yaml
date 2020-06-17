@@ -1,0 +1,18 @@
+{{- if .Values.services.characteristic.create -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "aangine-backend-characteristic.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-characteristic.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ .Values.services.characteristic.hostname }}:{{ .Values.services.characteristic.service.httpPort }}']
+  restartPolicy: Always
+{{- end }}

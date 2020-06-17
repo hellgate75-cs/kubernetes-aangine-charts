@@ -1,0 +1,65 @@
+#Aangine UI Service default values file
+services:
+  subdomain: aangine
+  affinityNodes: []
+  dnsPolicy: ClusterFirst
+  aangine_ui:
+    create: true
+    hostname: aangine-ui
+    stackPrefix: aangine
+    stackName: aangine-frontend
+    stackDescrition: Aangine
+    applicationName: aangine-ui
+    replicaCount: 1
+    containerName: aangine-ui-public
+    privilegedPorts:
+    image:
+      repository: registry.gitlab.com/aangine/aangine-ui
+      repositoryBranch: qa
+      repositoryTag: latest
+      pullPolicy: IfNotPresent
+    imagePullSecrets: 
+      - name: aanginesecret
+    nameOverride: ""
+    fullnameOverride: ""
+    restartPolicy: Always
+    podSecurityContext: {}
+
+      # fsGroup: 2000
+    securityContext: {}
+      # capabilities:
+      #   drop:
+      #   - ALL
+      # readOnlyRootFilesystem: true
+      # runAsNonRoot: true
+      # runAsUser: 1000
+    service:
+      enabled: true
+      type: LoadBalancer
+      httpPort: 80
+      publicHttpPort: 80
+    commands: []
+    resources: {}
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    environment: []
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: aangine-service-account
+

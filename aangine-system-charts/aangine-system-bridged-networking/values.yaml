@@ -1,0 +1,60 @@
+services:
+  subdomain: aangine
+  dnsPolicy: ClusterFirst
+  bridged_network:
+    create: true
+    replicaCount: 1
+    namespace: kube-system
+    appName: bridged-network
+    image:
+      repository: kvaps/bridget
+      tag: v1.0.1
+      pullPolicy: IfNotPresent
+    serviceAccount:
+      # Annotations to add to the service account
+      annotations: {}
+      # The name of the service account to use.
+      name: bridged-network-serviceaccount
+    clusterRole:
+      # Annotations to add to the cluster role
+      annotations: {}
+      # The name of the cluster role to use.
+      name: bridged-network-clusterrole
+    clusterRoleBinding:
+      # Annotations to add to the cluster role
+      annotations: {}
+      # The name of the cluster role binding to use.
+      name: bridged-network-clusterrolebinding
+    statefulSet:
+      # Annotations to add to the cluster role
+      annotations: {}
+      # The name of the statful set to use.
+      name: bridged-network-statefulset
+    environment:
+      - name: BRIDGE
+        value: "cbr0"
+      - name: VLAN
+        value: "4"
+      - name: IFACE
+        value: "eth0"
+      - name: MTU
+        value: "1500"
+      - name: CHECK_SLAVES
+        value: "1"
+      - name: POD_NETWORK
+        value: "10.244.0.0/16"
+      - name: DEBUG
+        value: "0"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+    nodeSelector: {}
+    affinity: {}
+    tolerations:
+      - operator: Exists
+        effect: NoSchedule

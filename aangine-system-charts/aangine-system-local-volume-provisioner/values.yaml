@@ -1,0 +1,12 @@
+# Aangine Local Host-Path Volumes Provisioner default values file
+services:
+  subdomain: aangine
+  affinityNodes: []
+  local_volume_provisioner:
+    create: true
+    stackPrefix: aangine
+    stackName: aangine-platform
+    stackDescrition: Aangine
+    applicationName: local-host-path-provisioner
+    storage:
+      hostBindingFolder: /mnt/sda

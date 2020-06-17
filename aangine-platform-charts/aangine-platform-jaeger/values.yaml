@@ -1,0 +1,104 @@
+#jaeger Single Instance default values file
+services:
+  subdomain: aangine
+  affinityNodes: []
+  dnsPolicy: ClusterFirst
+  jaeger:
+    create: true
+    hostname: jaeger
+    stackPrefix: aangine
+    stackName: aangine-platform
+    stackDescrition: Aangine
+    applicationName: jaeger
+    replicaCount: 1
+    strategyType: Recreate
+    containerName: jaeger-public
+    image:
+      repository: jaegertracing/all-in-one
+      repositoryTag: latest
+      pullPolicy: IfNotPresent
+    storage:
+      enableVolume: true
+      installVolume: true
+      capacity: 10Gi
+      accessModes:
+        - ReadWriteMany
+      pvrp: Retain
+      mountPoint: /mnt/sda
+      hostDataBaseFolder: /mnt/sda
+      hostConfigFolder: /home/docker/kubernetes/config/platform/jaeger/sampling_strategies.json
+    imagePullSecrets: 
+      - name: aanginesecret
+    nameOverride: ""
+    fullnameOverride: ""
+    restartPolicy: Always
+    podSecurityContext: {}
+
+      # fsGroup: 2000
+    securityContext: {}
+      # capabilities:
+      #   drop:
+      #   - ALL
+      # readOnlyRootFilesystem: true
+      # runAsNonRoot: true
+      # runAsUser: 1000
+    service:
+      enabled: true
+      query:
+        type: LoadBalancer
+      collector:
+        type: ClusterIP
+      
+      tcpPort1: 5778
+      publicTcpPort1: 5778
+
+      tcpPort2: 14268
+      publicTcpPort2: 14268
+
+      tcpPort3: 14250
+      publicTcpPort3: 14250
+
+      tcpPort4: 16686
+      publicTcpPort4: 16686
+
+      tcpPort5: 9411
+      publicTcpPort5: 9411
+
+      tcpPort6: 14269
+      publicTcpPort6: 14269
+
+      tcpPort7: 14267
+      publicTcpPort7: 14267
+
+      udpPort1: 5775
+      publicUdpPort1: 5775
+
+      udpPort2: 6831
+      publicUdpPort2: 6831
+
+      udpPort3: 6832
+      publicUdpPort3: 6832
+    commands: []
+    resources: {}
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: aangine-service-account
+

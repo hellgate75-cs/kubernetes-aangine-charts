@@ -1,0 +1,59 @@
+{{- if .Values.services.mongodb.create -}}
+{{- if .Values.services.mongodb.storage.enableVolume -}}
+{{- if .Values.services.mongodb.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-mongodb-pv-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-databasemongodb.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.mongodb.storage.capacity }}
+  {{- with .Values.services.mongodb.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.mongodb.storage.pvrp }}
+  storageClassName: {{ include "aangine-databasemongodb.storageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-databasemongodb.mountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-mongodb-pv-2
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-databasemongodb.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.mongodb.storage.capacity }}
+  {{- with .Values.services.mongodb.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.mongodb.storage.pvrp }}
+  storageClassName: {{ include "aangine-databasemongodb.configStorageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-databasemongodb.configMountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,22 @@
+{{- if .Values.services.portfolio_item.create -}}
+{{- if .Values.services.portfolio_item.service.enabled -}}
+{{- $svcHttpPort := .Values.services.portfolio_item.service.httpPort -}}
+{{- $httpPort := .Values.services.portfolio_item.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.portfolio_item.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-portfolio-item.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-portfolio-item.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

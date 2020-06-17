@@ -1,0 +1,65 @@
+{{- if .Values.services.bridged_network.create }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.services.bridged_network.statefulSet.name }}
+  namespace: {{ .Values.services.bridged_network.namespace }}
+  labels:
+    {{- include "aangine-system-bridged-networking.labels" . | nindent 4 }}
+  {{- with .Values.services.bridged_network.statefulSet.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "aangine-system-bridged-networking.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "aangine-system-bridged-networking.labels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      {{- with .Values.services.bridged_network.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.bridged_network.affinity }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.bridged_network.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ .Values.services.bridged_network.serviceAccount.name }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: {{ .Values.services.bridged_network.appName }}-instance
+        image: {{ printf "%s:%s" .Values.services.bridged_network.image.repository .Values.services.bridged_network.image.tag | quote}}
+        imagePullPolicy: {{ .Values.services.bridged_network.image.pullPolicy }}
+        env:
+          {{- toYaml .Values.services.bridged_network.environment | nindent 10 }}
+        securityContext:
+          {{- toYaml .Values.services.bridged_network.securityContext | nindent 10 }}
+        volumeMounts:
+        - name: cni-cfg
+          mountPath: /etc/cni/net.d
+      volumes:
+        - name: cni-cfg
+          hostPath:
+            path: /etc/cni/net.d
+
+{{- end }}

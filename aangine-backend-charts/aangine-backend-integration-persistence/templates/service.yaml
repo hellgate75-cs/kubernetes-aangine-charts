@@ -1,0 +1,22 @@
+{{- if .Values.services.integration_persistence.create -}}
+{{- if .Values.services.integration_persistence.service.enabled -}}
+{{- $svcHttpPort := .Values.services.integration_persistence.service.httpPort -}}
+{{- $httpPort := .Values.services.integration_persistence.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.integration_persistence.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-integration-persistence.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-integration-persistence.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,22 @@
+{{- if .Values.services.bridged_network.create }}
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Values.services.bridged_network.clusterRoleBinding.name }}
+  namespace: {{ .Values.services.bridged_network.namespace }}
+  labels:
+    {{- include "aangine-system-bridged-networking.labels" . | nindent 4 }}
+  {{- with .Values.services.bridged_network.clusterRoleBinding.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Values.services.bridged_network.clusterRole.name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.services.bridged_network.serviceAccount.name }}
+  namespace: kube-system
+
+{{- end }}

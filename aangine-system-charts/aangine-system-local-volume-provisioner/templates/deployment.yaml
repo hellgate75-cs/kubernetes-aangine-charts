@@ -1,0 +1,49 @@
+{{- if .Values.services.local_volume_provisioner.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-system-local-volume-provisioner.pathProvisionerName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-system-local-volume-provisioner.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "aangine-system-local-volume-provisioner.pathProvisionerName" . }}
+        {{- include "aangine-system-local-volume-provisioner.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "aangine-system-local-volume-provisioner.pathProvisionerName" . }}
+        {{- include "aangine-system-local-volume-provisioner.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "aangine-system-local-volume-provisioner.serviceAccountName" . }}
+      containers:
+      - name: {{ .Values.services.local_volume_provisioner.stackPrefix }}-path-provisioner
+        image: rancher/local-path-provisioner:v0.0.12
+        imagePullPolicy: IfNotPresent
+        command:
+        - local-path-provisioner
+        - "--debug"
+        - "start"
+        - "--provisioner-name"
+        - "rancher.io/local-path"
+        - "--namespace"
+        - "{{ .Release.Namespace }}"
+        - "--config"
+        - "/etc/config/config.json"
+        volumeMounts:
+        - name: {{ .Values.services.local_volume_provisioner.stackPrefix }}-cv
+          mountPath: /etc/config/
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      volumes:
+        - name: {{ .Values.services.local_volume_provisioner.stackPrefix }}-cv
+          configMap:
+            name: {{ include "aangine-system-local-volume-provisioner.configMapName" . }}
+{{- end }}
+

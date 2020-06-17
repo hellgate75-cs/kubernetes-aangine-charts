@@ -1,0 +1,32 @@
+{{- if .Values.services.redis.create -}}
+{{- if .Values.services.redis.storage.enableVolume -}}
+{{- if .Values.services.redis.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-redis-single-pv-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-redis.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.redis.storage.capacity }}
+  {{- with .Values.services.redis.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.redis.storage.pvrp }}
+  storageClassName: {{ include "aangine-platform-redis.storageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-platform-redis.mountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+{{- end }}
+{{- end }}
+{{- end }}

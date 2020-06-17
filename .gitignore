@@ -1,0 +1,6 @@
+**/*.log
+**/helm.*
+**/kubectl*
+**/kops*
+**/kind*
+**/bin/*

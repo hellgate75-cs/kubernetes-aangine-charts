@@ -1,0 +1,156 @@
+{{- if .Values.services.consul.cluster.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-platform-consul-cluster.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.consul.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-platform-consul-cluster.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-platform-consul-cluster.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.consul.hostname }}
+        {{- include "aangine-platform-consul-cluster.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.consul.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-platform-consul-cluster.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.consul.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.consul.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- if (.Values.services.consul.storage.enableVolume) }}
+        - name: consul-data-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ include "aangine-platform-consul-cluster.fullname" . }}-claim-1
+            readOnly: false
+        {{- else }}
+        - name: consul-data-persistent-storage
+          hostPath:
+            path: {{ include "aangine-platform-consul-cluster.alternativeDataFolder" . }}
+        {{- end }}
+#        - name: consul-config-host-dir
+#          hostPath:
+#            path: {{ .Values.services.consul.storage.hostConfigFolder }}
+      hostname: {{ .Values.services.consul.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - aangine-db
+            {{- if (.Values.services.subdomain) }}
+            - aangine-db.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - aangine-db.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - aangine-db.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.consul.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.consul.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.consul.securityContext | nindent 12 }}
+          image: {{ printf "%s/%s:%s" .Values.services.consul.image.repository .Values.services.consul.image.repositoryBranch .Values.services.consul.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.consul.image.pullPolicy }}
+          ports:
+            - name: dns-port
+              containerPort:  {{ .Values.services.consulPrivateDnsPort }}
+              protocol: UDP
+            - name: http-port
+              containerPort:  {{ .Values.services.consulPublicNodePort }}
+              protocol: TCP
+              
+          env:
+            - name: HTTP_PORT
+              value: {{ .Values.services.consulPublicNodePort | quote }}
+            - name: DNS_PORT
+              value: {{ .Values.services.consulPrivateDnsPort | quote }}
+            - name: CONSUL_ALLOW_PRIVILEGED_PORTS
+              value: {{ .Values.services.consul.privilegedPorts | quote }}
+            - name: COMMA_SEPARATED_NODES_LIST
+              value: {{ .Values.services.consul.hostnames }}
+            - name: DOMAIN
+              value: ""
+#              value: {{ include "aangine-platform-consul-cluster.domainName" . | quote  }}
+            - name: IS_CLUSTERED
+              value: "yes"
+            - name: NO_CHECK_NODES
+              value: "yes"
+            {{ if (.Values.services.enableGloballyJaeger) }}
+            - name: OPENTRACING_JAEGER_PORT
+              value: {{ .Values.services.jaegerMsPrivateUdpPort | quote }}
+            - name: OPENTRACING_JAEGER_HOST
+              value: {{ .Values.services.jaegerMsPrivateHostname | quote }}
+            - name: OPENTRACING_JAEGER_LOG-SPANS
+              value: {{ .Values.services.jaegerMsLogSpansEnabled | quote }}
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: {{ .Values.services.jaegerMsTracingEnabled | quote }}
+            {{ else }}
+            - name: OPENTRACING_JAEGER_LOG-SPANS
+              value: "false"
+            - name: OPENTRACING_JAEGER_ENABLED
+              value: "false"
+            {{ end}}
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ .Values.services.consulPublicNodePort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ .Values.services.consulPublicNodePort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            successThreshold: 1
+#            periodSeconds: 300
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.services.consul.resources | nindent 12 }}
+          volumeMounts:
+            - name: consul-data-persistent-storage
+              mountPath: /consul/data
+#            - name: consul-config-host-dir
+#              mountPath: /consul/config
+            
+      {{- with .Values.services.consul.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.consul.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.consul.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

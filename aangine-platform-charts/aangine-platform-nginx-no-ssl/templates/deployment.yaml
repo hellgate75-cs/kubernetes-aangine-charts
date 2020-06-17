@@ -1,0 +1,105 @@
+{{- if .Values.services.nginx.noSSL.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-platform-nginx-nossl.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-nginx-nossl.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.nginx.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-platform-nginx-nossl.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-platform-nginx-nossl.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.nginx.hostname }}
+        {{- include "aangine-platform-nginx-nossl.selectorLabels" . | nindent 8 }}
+    spec:
+      dnsPolicy: {{ .Values.services.dnsPolicy }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.nginx.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-platform-nginx-nossl.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.nginx.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.nginx.podSecurityContext | nindent 8 }}
+      hostname: {{ .Values.services.nginx.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - aangine-db
+            {{- if (.Values.services.subdomain) }}
+            - aangine-db.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - aangine-db.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - aangine-db.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.nginx.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.nginx.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.nginx.securityContext | nindent 12 }}
+          image: {{ printf "%s/%s:%s" .Values.services.nginx.image.repository .Values.services.nginx.image.repositoryBranch .Values.services.nginx.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.nginx.image.pullPolicy }}
+          ports:
+            - name: http-port
+              containerPort: {{ .Values.services.aangineNginxNodePort}}
+              protocol: TCP
+          env:
+            - name: CONSUL_URL
+              value: {{ printf "consul-public:%s" .Values.services.consulPublicNodePort | quote}}
+            - name: SERVICE_PORT
+              value: {{ .Values.services.aangineNginxNodePort | quote}}
+            {{- toYaml .Values.services.nginx.environment | nindent 12 }}
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#               port: {{ .Values.services.aangineNginxNodePort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            periodSeconds: 300
+#            failureThreshold: 20
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: {{ .Values.services.aangineNginxNodePort }}
+#            initialDelaySeconds: 10
+#            timeoutSeconds: 10
+#            periodSeconds: 300
+#            failureThreshold: 20
+          resources:
+            {{- toYaml .Values.services.nginx.resources | nindent 12 }}
+      {{- with .Values.services.nginx.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.nginx.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.nginx.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

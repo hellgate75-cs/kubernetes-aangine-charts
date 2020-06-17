@@ -1,0 +1,22 @@
+{{- if .Values.services.capacity.create -}}
+{{- if .Values.services.capacity.service.enabled -}}
+{{- $svcHttpPort := .Values.services.capacity.service.httpPort -}}
+{{- $httpPort := .Values.services.capacity.service.publicHttpPort -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.capacity.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-capacity.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $httpPort }}
+      targetPort: {{ $svcHttpPort }}
+      protocol: TCP
+      name: http-port
+  selector:
+    {{- include "aangine-backend-capacity.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

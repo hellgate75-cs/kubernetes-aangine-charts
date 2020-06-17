@@ -1,0 +1,86 @@
+{{- if .Values.services.consul.cluster.create -}}
+{{- if .Values.services.consul.storage.enableVolume -}}
+{{- if .Values.services.consul.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-consul-cluster-pv-1
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.consul.storage.capacity }}
+  {{- with .Values.services.consul.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.consul.storage.pvrp }}
+  storageClassName: {{ include "aangine-platform-consul-cluster.storageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-platform-consul-cluster.mountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-consul-cluster-pv-2
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.consul.storage.capacity }}
+  {{- with .Values.services.consul.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.consul.storage.pvrp }}
+  storageClassName: {{ include "aangine-platform-consul-cluster.secondStorageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-platform-consul-cluster.secondMountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-consul-cluster-pv-3
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-consul-cluster.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.services.consul.storage.capacity }}
+  {{- with .Values.services.consul.storage.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  persistentVolumeReclaimPolicy: {{ .Values.services.consul.storage.pvrp }}
+  storageClassName: {{ include "aangine-platform-consul-cluster.thirdStorageClassName" . }}
+  hostPath:
+    path: {{ include "aangine-platform-consul-cluster.thirdMountPoint" . }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              {{- toYaml .Values.services.affinityNodes | nindent 14 }}
+{{- end }}
+{{- end }}
+{{- end }}

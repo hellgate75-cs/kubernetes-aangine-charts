@@ -1,0 +1,85 @@
+#Consul Single Instance default values file
+services:
+  subdomain: aangine
+  affinityNodes: []
+  dnsPolicy: ClusterFirst
+  nginx:
+    withSSL:
+      create: true
+    useUI: true
+    useNoAuth: false
+    hostname: nginx
+    stackPrefix: aangine
+    stackName: aangine-platform
+    stackDescrition: Aangine
+    applicationName: nginx
+    replicaCount: 1
+    containerName: nginx
+    image:
+      repository: registry.gitlab.com/aangine/kubernetes/aangine-service-docker-images/nginx
+      repositoryBranch: development
+      repositoryTag: latest
+      pullPolicy: IfNotPresent
+    imagePullSecrets: 
+      - name: aanginesecret
+    nameOverride: ""
+    fullnameOverride: ""
+    restartPolicy: Always
+    podSecurityContext: {}
+
+      # fsGroup: 2000
+    securityContext: {}
+      # capabilities:
+      #   drop:
+      #   - ALL
+      # readOnlyRootFilesystem: true
+      # runAsNonRoot: true
+      # runAsUser: 1000
+    service:
+      enabled: true
+      type: NodePort
+    commands: []
+    resources: {}
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    environment:
+      - name: GUI_SERVICE_NEEDED
+        value: "true"
+      - name: AUTH_SERVICE_NAME
+        value: auth-service
+      - name: GUI_SERVICE
+        value: aangine-ui:80
+      - name: IS_NGINX_NO_AUTH
+        value: "false"
+      - name: USE_SSL
+        value: "true"
+      - name: CERTIFICATES_TAR_GZ_URL
+        value: ""
+      - name: NGINX_SSL_CERT_PATH
+        value: "/etc/nginx/certs/certificate.crt"
+      - name: NGINX_SSL_KEY_PATH
+        value: "/etc/nginx/certs/private.key"
+      - name: NGINX_SSL_SERVER_NAME
+        value: "aangine"
+      - name: NGINX_SSL_DOMAIN_NAME
+        value: "aangine.continuous.software"
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: aangine-service-account
+

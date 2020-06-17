@@ -1,0 +1,18 @@
+{{- if .Values.services.ppm_integration_service.create -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "aangine-backend-ppm-integration-service.fullname" . }}-test-connection"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-backend-ppm-integration-service.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ .Values.services.ppm_integration_service.hostname }}:{{ .Values.services.ppm_integration_service.service.httpPort }}']
+  restartPolicy: Always
+{{- end }}

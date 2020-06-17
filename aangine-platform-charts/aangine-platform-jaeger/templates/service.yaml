@@ -1,0 +1,161 @@
+{{- $svcTcpPort1 := .Values.services.jaeger.service.tcpPort1 -}}
+{{- $tcpPort1 := .Values.services.jaeger.service.publicTcpPort1 -}}
+{{- $svcTcpPort2 := .Values.services.jaeger.service.tcpPort2 -}}
+{{- $tcpPort2 := .Values.services.jaeger.service.publicTcpPort2 -}}
+{{- $svcTcpPort3 := .Values.services.jaeger.service.tcpPort3 -}}
+{{- $tcpPort3 := .Values.services.jaeger.service.publicTcpPort3 -}}
+{{- $svcTcpPort4 := .Values.services.jaeger.service.tcpPort4 -}}
+{{- $tcpPort4 := .Values.services.jaeger.service.publicTcpPort4 -}}
+{{- $svcTcpPort5 := .Values.services.jaeger.service.tcpPort5 -}}
+{{- $tcpPort5 := .Values.services.jaeger.service.publicTcpPort5 -}}
+{{- $svcTcpPort6 := .Values.services.jaeger.service.tcpPort6 -}}
+{{- $tcpPort6 := .Values.services.jaeger.service.publicTcpPort6 -}}
+{{- $svcTcpPort7 := .Values.services.jaeger.service.tcpPort7 -}}
+{{- $tcpPort7 := .Values.services.jaeger.service.publicTcpPort7 -}}
+{{- $svcUdpPort1 := .Values.services.jaeger.service.udpPort1 -}}
+{{- $udpPort1 := .Values.services.jaeger.service.publicUdpPort1 -}}
+{{- $svcUdpPort2 := .Values.services.jaeger.service.udpPort2 -}}
+{{- $udpPort2 := .Values.services.jaeger.service.publicUdpPort2 -}}
+{{- $svcUdpPort3 := .Values.services.jaeger.service.udpPort3 -}}
+{{- $udpPort3 := .Values.services.jaeger.service.publicUdpPort3 -}}
+{{- if .Values.services.jaeger.create -}}
+{{- if .Values.services.jaeger.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-jaeger.fullname" . }}-external-public-query-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/servicekind: jaeger-public-query-service
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.services.jaegerPublicNodePort }}
+      targetPort: {{ $svcTcpPort4 }}
+      protocol: TCP
+      name: public-query-port
+  selector:
+    {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.services.jaeger.hostname }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/servicekind: jaeger-public-query-service
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $svcTcpPort4 }}
+      targetPort: {{ $svcTcpPort4 }}
+      protocol: TCP
+      name: internal-query-port
+    - port: {{ $svcTcpPort7 }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort7 }}
+      name: internal-jaeger-collector-tchannel
+    - port: {{ $svcTcpPort2 }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort2 }}
+      name: internal-jaeger-collector-http
+    - port: {{ $svcTcpPort5 }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort5 }}
+      name: internal-jaeger-collector-zipkin
+    - name: internal-agent-zipkin-thrift
+      port: {{ $svcUdpPort1 }}
+      protocol: UDP
+      targetPort: {{ $svcUdpPort1 }}
+    - name: internal-agent-compact
+      port: {{ $udpPort2 }}
+      protocol: UDP
+      targetPort: {{ $udpPort2 }}
+    - name: internal-agent-binary
+      port: {{ $svcUdpPort3 }}
+      protocol: UDP
+      targetPort: {{ $svcUdpPort3 }}
+    - name: internal-agent-configs
+      port:  {{ $svcTcpPort1 }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort1 }}
+  selector:
+    {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-jaeger.fullname" . }}-collector
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/servicekind: jaeger-collector
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.services.jaeger.service.collector.type }}
+  ports:
+    - port: {{ .Values.services.jaegerCollectorTChannelPort }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort7 }}
+      name: public-jaeger-collector-tchannel
+    - port: {{ .Values.services.jaegerCollectorHttpPort }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort2 }}
+      name: public-jaeger-collector-http
+    - port: {{ .Values.services.jaegerCollectorZipkinPort }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort5 }}
+      name: public-jaeger-collector-zipkin
+  selector:
+    {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-jaeger.fullname" . }}-agent
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/servicekind: jaeger-agent
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - name: stack-agent-zipkin-thrift
+      port: {{ $svcUdpPort1 }}
+      protocol: UDP
+      targetPort: {{ $svcUdpPort1 }}
+    - name: stack-agent-compact
+      port: {{ $udpPort2 }}
+      protocol: UDP
+      targetPort: {{ $udpPort2 }}
+    - name: stack-agent-binary
+      port: {{ $svcUdpPort3 }}
+      protocol: UDP
+      targetPort: {{ $svcUdpPort3 }}
+    - name: stack-agent-configs
+      port: {{ $svcTcpPort1 }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort1 }}
+  selector:
+    {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-jaeger.fullname" . }}-zipkin
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/servicekind: jaeger-zipkin
+    {{- include "aangine-platform-jaeger.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ $svcTcpPort5 }}
+      protocol: TCP
+      targetPort: {{ $svcTcpPort5 }}
+      name: stack-jaeger-collector-zipkin
+  selector:
+    {{- include "aangine-platform-jaeger.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

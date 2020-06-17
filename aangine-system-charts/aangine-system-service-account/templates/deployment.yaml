@@ -1,0 +1,100 @@
+{{- if .Values.services.service_account.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-system-service-account.fullname" . }}-sa-ddf-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-system-service-account.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "aangine-system-service-account.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-system-service-account.fullname" . }}-as-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.service_account.hostname }}
+        {{- include "aangine-system-service-account.selectorLabels" . | nindent 8 }}
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.service_account.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-system-service-account.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.service_account.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.service_account.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: addson-config-host-dir
+          hostPath:
+            path: {{ .Values.services.service_account.storage.hostConfigFolder }}
+      hostname: {{ .Values.services.service_account.hostname }}
+      hostAliases:
+        {{- if (.Values.services.service_account.enableMongoDbHosts) }}
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - aangine-db
+            {{- if (.Values.services.subdomain) }}
+            - aangine-db.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - aangine-db.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - aangine-db.local
+          {{- end }}
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.service_account.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.service_account.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.service_account.securityContext | nindent 12 }}
+          image: {{ printf "%s:%s" .Values.services.service_account.image.repository .Values.services.service_account.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.service_account.image.pullPolicy }}
+          command: 
+            {{- toYaml .Values.services.service_account.commands | nindent 12 }}
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - /etc/hosts
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /etc/hosts
+          resources:
+            {{- toYaml .Values.services.service_account.resources | nindent 12 }}
+          volumeMounts:
+            - name: addson-config-host-dir
+              mountPath: /mnt/disk
+            
+      {{- with .Values.services.service_account.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.service_account.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.service_account.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

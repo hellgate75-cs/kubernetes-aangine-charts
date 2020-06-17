@@ -1,0 +1,10 @@
+apiVersion: v2
+name: aangine-platform-nginx-no-ssl
+description: NGnix No-SSL Node Chart
+type: application
+version: 1.0.3
+appVersion: 1.1.1
+maintainers:
+  - name: Fabrizio Torelli
+    email: fabrizio.torelli@optiim.com
+    url: https://www.linkedin.com/in/fabriziotorelli/

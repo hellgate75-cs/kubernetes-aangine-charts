@@ -1,0 +1,94 @@
+#Consul Single Instance default values file
+services:
+  subdomain: aangine
+  affinityNodes: []
+  dnsPolicy: ClusterFirst
+  mongoDbIp: 0.0.0.0
+  mongodb:
+    create: true
+    enableCluster: false
+    testEnabled: false
+    hostname: aangine-db
+    stackPrefix: aangine
+    stackName: aangine-platform
+    stackDescrition: Aangine
+    applicationName: mongodb
+    replicaCount: 1
+    containerName: mongodb-public
+    privilegedPorts:
+    image:
+      repository: mongo
+      repositoryTag: bionic
+      pullPolicy: IfNotPresent
+    storage:
+      enableVolume: true
+      installVolume: true
+      installVolume2: false
+      capacity: 30Gi
+      capacity2: 5Gi
+      accessModes:
+        - ReadWriteMany
+      pvrp: Retain
+      mountPoint: /mnt/sda
+      hostDataBaseFolder: /mnt/sda
+      hostConfigFolder: /home/docker/kubernetes/config/platform/mongodb/single
+    imagePullSecrets: 
+      - name: aanginesecret
+    nameOverride: ""
+    fullnameOverride: ""
+    restartPolicy: Always
+    podSecurityContext: {}
+
+      # fsGroup: 2000
+    securityContext: {}
+      # capabilities:
+      #   drop:
+      #   - ALL
+      # readOnlyRootFilesystem: true
+      # runAsNonRoot: true
+      # runAsUser: 1000
+    service:
+      enabled: true
+      type: LoadBalancer
+      httpPort: 27017
+    commands: []
+    ingress:
+      enabled: false
+      annotations:
+        kubernetes.io/ingress.class: mongodb
+        kubernetes.io/tls-acme: "false"
+      hosts:
+        - host: mongodb.local
+          paths: []
+      tls: []
+      #  - secretName: mongodb-tls
+      #    hosts:
+      #      - mongodb.local
+    resources: {}
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    environment:
+      - name: MONGO_INITDB_ROOT_USERNAME
+        value: root
+      - name: MONGO_INITDB_ROOT_PASSWORD
+        value: aangine1234@
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: aangine-service-account
+

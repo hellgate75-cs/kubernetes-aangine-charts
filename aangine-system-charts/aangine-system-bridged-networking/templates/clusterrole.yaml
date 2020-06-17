@@ -1,0 +1,33 @@
+{{- if .Values.services.bridged_network.create }}
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Values.services.bridged_network.clusterRole.name }}
+  namespace: {{ .Values.services.bridged_network.namespace }}
+  labels:
+    {{- include "aangine-system-bridged-networking.labels" . | nindent 4 }}
+  {{- with .Values.services.bridged_network.clusterRole.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - list
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - nodes/status
+    verbs:
+      - patch
+{{- end }}

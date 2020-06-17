@@ -1,0 +1,130 @@
+{{- if .Values.services.addson_storage.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aangine-system-addson-storage.fullname" . }}-storage-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-system-addson-storage.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.addson_storage.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "aangine-system-addson-storage.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "aangine-system-addson-storage.fullname" . }}-deployment-template
+      namespace: {{ .Release.Namespace }}
+      labels:
+        app.kubernetes.io/hostname: {{ .Values.services.addson_storage.hostname }}
+        {{- include "aangine-system-addson-storage.selectorLabels" . | nindent 8 }}
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    {{- toYaml .Values.services.affinityNodes | nindent 20 }}
+    {{- with .Values.services.addson_storage.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "aangine-system-addson-storage.serviceAccountName" . }}
+      {{- if (.Values.services.subdomain) }}
+      subdomain: {{ .Values.services.subdomain }}
+      {{- end }}
+      restartPolicy: {{ .Values.services.addson_storage.restartPolicy }}
+      securityContext:
+        {{- toYaml .Values.services.addson_storage.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: addson-storage-host-dir
+          hostPath:
+            path: {{ .Values.services.addson_storage.storage.hostConfigFolder }}
+      hostname: {{ .Values.services.addson_storage.hostname }}
+      hostAliases:
+        - ip: {{ .Values.services.mongoDbIp }}
+          hostnames:
+            - aangine-db
+            {{- if (.Values.services.subdomain) }}
+            - aangine-db.{{ .Values.services.subdomain }}.{{ .Release.Namespace }}.svc.cluster.local
+            {{- else }}
+            - aangine-db.{{ .Release.Namespace }}.svc.cluster.local
+            {{- end }}
+            - aangine-db.local
+        - ip: 127.0.0.1
+          hostnames:
+            - {{ .Values.services.addson_storage.hostname }}.local
+            - localhost.local
+            - localhost
+      containers:
+        - name: {{ .Values.services.addson_storage.containerName }}
+          securityContext:
+            {{- toYaml .Values.services.addson_storage.securityContext | nindent 12 }}
+          image: {{ printf "%s/%s:%s" .Values.services.addson_storage.image.repository .Values.services.addson_storage.image.repositoryBranch .Values.services.addson_storage.image.repositoryTag | quote}}
+          imagePullPolicy: {{ .Values.services.addson_storage.image.pullPolicy }}
+          command: 
+            - "/docker-entrypoint.sh"
+            - "command"
+            - "/root/repo"
+            - "mkdir"
+            - "-p"
+            - "/mnt/disk/sda/{{ .Release.Namespace }}/redis"
+            - "^^^"
+            - "command"
+            - "/root/repo"
+            - "mkdir"
+            - "-p"
+            - "/mnt/disk/sda/{{ .Release.Namespace }}/jaeger"
+            - "^^^"
+            - "command"
+            - "/root/repo"
+            - "mkdir"
+            - "-p"
+            - "/mnt/disk/sda/{{ .Release.Namespace }}/consul/single"
+            - "^^^"
+            - "command"
+            - "/root/repo"
+            - "mkdir"
+            - "-p"
+            - "/mnt/disk/sda/{{ .Release.Namespace }}/consul/cluster"
+            - "^^^"
+            - "command"
+            - "/root/repo"
+            - "mkdir"
+            - "-p"
+            - "/mnt/disk/sda/{{ .Release.Namespace }}/mongodb"
+            - "^^^"
+            - "sleep"
+            - "infinity"
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - /docker-entrypoint.sh
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /docker-entrypoint.sh
+          resources:
+            {{- toYaml .Values.services.addson_storage.resources | nindent 12 }}
+          volumeMounts:
+            - name: addson-storage-host-dir
+              mountPath: /mnt/disk
+            
+      {{- with .Values.services.addson_storage.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.services.addson_storage.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.services.addson_storage.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

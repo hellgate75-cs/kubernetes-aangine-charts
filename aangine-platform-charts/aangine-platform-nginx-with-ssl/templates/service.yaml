@@ -1,0 +1,37 @@
+{{- if .Values.services.nginx.withSSL.create -}}
+{{- if .Values.services.nginx.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-nginx-with-ssl.fullname" . }}-external-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-nginx-with-ssl.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.services.aangineNginxNodePort }}
+      targetPort: {{ .Values.services.aangineNginxNodePort }}
+      protocol: TCP
+      name: ssl-port
+  selector:
+    {{- include "aangine-platform-nginx-with-ssl.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aangine-platform-nginx-with-ssl.fullname" . }}-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-nginx-with-ssl.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .Values.services.aangineNginxNodePort }}
+      targetPort: {{ .Values.services.aangineNginxNodePort }}
+      protocol: TCP
+      name: ssl-port
+  selector:
+    {{- include "aangine-platform-nginx-with-ssl.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

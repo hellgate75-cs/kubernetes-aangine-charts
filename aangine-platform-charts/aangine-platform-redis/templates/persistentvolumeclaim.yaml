@@ -1,0 +1,21 @@
+{{- if .Values.services.redis.create -}}
+{{- if .Values.services.redis.storage.enableVolume -}}
+{{- if .Values.services.redis.storage.installVolume -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "aangine-platform-redis.fullname" . }}-claim
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aangine-platform-redis.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeName: {{ .Release.Namespace }}-redis-single-pv-1
+  storageClassName: {{ include "aangine-platform-redis.storageClassName" . }}
+  resources:
+    requests:
+      storage: {{ .Values.services.redis.storage.capacity }}
+{{- end }}
+{{- end }}
+{{- end }}

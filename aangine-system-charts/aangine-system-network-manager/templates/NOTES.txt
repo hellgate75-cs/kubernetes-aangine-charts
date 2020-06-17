@@ -1,0 +1,1 @@
+1. This is a networking service, so exposed ports or connectivity, it provides on the kube-system namespace a bridged network for all pods

@@ -50,4 +50,4 @@ Enjoy your experience
 
 ## License
 
-Express All rights reserved by Continuous Software Ltd, author: [Fabrizio Torelli](mailto:hellgate75@gmail.com), follow articles on [LinkedIn](https://www.linkedin.com/in/fabriziotorelli)
+All rights are reserved by the author: [Fabrizio Torelli](mailto:hellgate75@gmail.com) undel [LGPL v3 License](/LICENSE) minimum requirements, and idividual creative rights. An use or distribution of this repository content must be authorized by the author, and any abouse will be persecuted accordingly to the law. You can follow authors articles on [LinkedIn](https://www.linkedin.com/in/fabriziotorelli) for further information of updates.
